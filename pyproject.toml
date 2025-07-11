@@ -6,12 +6,12 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "image_segmenter"
+name = "image_segmentation"
 version = "1.0.0"
 description = "A tool that can be used to apply image segmentation."
 readme = "README.md"
 authors = [
-    { name = "Frank Mayet", email = "frank.mayet@desy.de" }
+    { name = "Dimitrii Tomin", email = "dimitrii.tomin@gmail.com" }
 ]
 dependencies = [
     "numpy",
@@ -19,4 +19,4 @@ dependencies = [
 ]
 
 [tool.setuptools]
-packages = ["image_segmenter"]
+packages = ["image_segmentation"]
