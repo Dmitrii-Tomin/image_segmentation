@@ -1,4 +1,4 @@
-name: image_segmenter
+name: image_segmentation
 channels:
   - conda-forge
 dependencies:
