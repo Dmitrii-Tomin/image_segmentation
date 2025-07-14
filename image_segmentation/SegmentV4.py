@@ -104,7 +104,7 @@ def main(depth, skip, size, sigma):
     """Load the beam and background images and process them"""
     ####################################################################################
     beam_file = open(
-        "my_img_segmentation\\all\\OTRC.2560.T3-20250309_130720_486.pcl", "rb"
+        "my_img_segmentation\\tds\\OTRA.473.B2D-20250309_111751_972.pcl", "rb"
     )
     back_file = open(
         "my_img_segmentation\\tds\\OTRA.473.B2D-20250309_111945_501.pcl", "rb"
