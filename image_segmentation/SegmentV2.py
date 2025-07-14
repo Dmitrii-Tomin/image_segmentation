@@ -40,7 +40,7 @@ class Processing:
                     count += 1
                     mean_number_sum += number
 
-        mean_threshold = (mean_number_sum / count * 0.9) + (np.max(border) * 0.1)
+        mean_threshold = (mean_number_sum / count * 0.95) + (np.max(border) * 0.05)
         max_threshold = np.max(border) * 1.1
         print("Mean number:", mean_number_sum / count)
         print("Max number:", np.max(border))
@@ -79,7 +79,7 @@ class Processing:
                 density = np.sum(sec) / (sec.shape[0] * sec.shape[1])
                 if density <= mean_threshold or np.max(sec) <= max_threshold:
                     sec *= 0  # set to zero if below threshold
-                    sec += (n + 1) * 3000  # set to zero if below threshold
+                    sec += (n + 1) * 300  # set to zero if below threshold
                 else:
                     # if the density is above the threshold,
                     # add the segment to the next layer
@@ -105,12 +105,8 @@ def main(depth, border_width, sigma):
 
     # Load the beam and background images and process them
     ####################################################################################
-    beam_file = open(
-        "image_segmentation\\tds\\OTRC.2560.T3-20250309_131230_481.pcl", "rb"
-    )
-    back_file = open(
-        "image_segmentation\\tds\\OTRA.473.B2D-20250309_111945_501.pcl", "rb"
-    )
+    beam_file = open("tds\\OTRC.2560.T3-20250309_131230_481.pcl", "rb")
+    back_file = open("tds\\OTRA.473.B2D-20250309_111945_501.pcl", "rb")
     beam = pickle.load(beam_file)
     back = pickle.load(back_file)
 
@@ -159,7 +155,7 @@ def main(depth, border_width, sigma):
 
 
 if __name__ == "__main__":
-    border_width = 3  # Width of the border for threshold calculation
+    border_width = 1  # Width of the border for threshold calculation
     depth = 10  # Maximum depth of segmentation
     sigma = 2  # Sigma for Gaussian filter
     main(depth, border_width, sigma)
