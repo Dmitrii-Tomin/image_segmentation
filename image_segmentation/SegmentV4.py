@@ -98,29 +98,13 @@ def plot_image(image, title="Image", xlabel="x", ylabel="y"):
     plt.show()
 
 
-def main(depth, skip, size, sigma):
+def segment(initial_img, depth, skip, size, sigma):
     """combine everything in one function."""
 
-    """Load the beam and background images and process them"""
-    ####################################################################################
-    beam_file = open("tds\\OTRC.2560.T3-20250309_131230_481.pcl", "rb")
-    back_file = open("tds\\OTRA.473.B2D-20250309_111945_501.pcl", "rb")
-    beam = pickle.load(beam_file)
-    back = pickle.load(back_file)
-
-    # Start the timer
-    start = time.time()
-
-    # subtract the background from the beam
-    # and add a constant to avoid negative values
-    subtracted_img = beam.astype(float) - back.astype(float)  # [200:1800, 400:1750]TBD
-    subtracted_img[subtracted_img < 0] = 0
-
-    original_img = subtracted_img.copy()
+    original_img = initial_img.copy()
 
     # Apply a Gaussian filter to the subtracted image
-    blurred_img = gaussian_filter(subtracted_img, sigma)
-    ####################################################################################
+    blurred_img = gaussian_filter(initial_img, sigma)
 
     # Initialize a list to hold the segmented images at each depth
     # each element of the list corresponds to a depth level
@@ -182,7 +166,7 @@ def main(depth, skip, size, sigma):
     processed_img = pic
 
     # Plot the original image
-    plot_image(subtracted_img, title="subtracted image", xlabel="x", ylabel="y")
+    plot_image(original_img, title="original image", xlabel="x", ylabel="y")
     # plot the blurred image
     plot_image(blurred_img, title="Blurred Image", xlabel="x", ylabel="y")
     # Plotting the final segmented image
@@ -194,4 +178,21 @@ if __name__ == "__main__":
     skip = 0  # Skip depths for segmentation
     size = 100  # Size for threshold calculation
     sigma = 2  # Sigma for Gaussian filter
-    main(depth, skip, size, sigma)
+
+    """Load the beam and background images and process them"""
+    ####################################################################################
+    beam_file = open("tds\\OTRC.2560.T3-20250309_131230_481.pcl", "rb")
+    back_file = open("tds\\OTRA.473.B2D-20250309_111945_501.pcl", "rb")
+    beam = pickle.load(beam_file)
+    back = pickle.load(back_file)
+
+    # Start the timer
+    start = time.time()
+
+    # subtract the background from the beam
+    # and add a constant to avoid negative values
+    initial_img = beam.astype(float) - back.astype(float)  # [200:1800, 400:1750]TBD
+    initial_img[initial_img < 0] = 0
+    ####################################################################################
+
+    segment(initial_img, depth, skip, size, sigma)
