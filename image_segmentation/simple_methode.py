@@ -59,12 +59,8 @@ def main(size, sigma):
 
     # Load the beam and background images and process them
     ####################################################################################
-    beam_file = open(
-        "image_segmentation\\tds\\OTRC.2560.T3-20250309_131230_481.pcl", "rb"
-    )
-    back_file = open(
-        "image_segmentation\\tds\\OTRA.473.B2D-20250309_111945_501.pcl", "rb"
-    )
+    beam_file = open("tds\\OTRC.2560.T3-20250309_130830_528.pcl", "rb")
+    back_file = open("tds\\OTRA.473.B2D-20250309_111945_501.pcl", "rb")
     beam = pickle.load(beam_file)
     back = pickle.load(back_file)
 

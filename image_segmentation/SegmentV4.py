@@ -159,24 +159,24 @@ def segment(initial_img, depth, skip, size, sigma):
         time.time() - start,
     )
 
-    mask = pic <= 0
-    original_img[mask] = 0
+    mask = np.isnan(pic)  # Create a mask for NaN values
+    original_img[mask] = np.nan  # Set NaN values in the original image
 
-    # processed_img = original_img
-    processed_img = pic
+    processed_img = original_img
+    # processed_img = pic
 
     # Plot the original image
-    plot_image(original_img, title="original image", xlabel="x", ylabel="y")
+    plot_image(initial_img, title="original image", xlabel="x", ylabel="y")
     # plot the blurred image
     plot_image(blurred_img, title="Blurred Image", xlabel="x", ylabel="y")
-    # Plotting the final segmented image
-    plot_image(processed_img, title="Processed Image", xlabel="x", ylabel="y")
+
+    return processed_img
 
 
 if __name__ == "__main__":
     depth = 10  # Maximum depth of segmentation
     skip = 0  # Skip depths for segmentation
-    size = 100  # Size for threshold calculation
+    size = 100  # Size of the boxes for threshold calculation
     sigma = 2  # Sigma for Gaussian filter
 
     """Load the beam and background images and process them"""
@@ -195,4 +195,7 @@ if __name__ == "__main__":
     initial_img[initial_img < 0] = 0
     ####################################################################################
 
-    segment(initial_img, depth, skip, size, sigma)
+    processed_img = segment(initial_img, depth, skip, size, sigma)
+
+    # Plotting the final segmented image
+    plot_image(processed_img, title="Processed Image", xlabel="x", ylabel="y")
