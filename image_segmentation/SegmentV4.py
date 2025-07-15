@@ -42,20 +42,20 @@ class Processing:
 
         return mean_threshold, max_threshold
 
-    def pic_devider(self):
+    def pic_divider(self, pic):
         """Divide the image into four quadrants."""
 
         # Get the dimensions of the image
-        h, w = self._pic.shape
+        h, w = pic.shape
 
         # Ensure the image dimensions are even
         h2, w2 = h // 2, w // 2
 
         # Divide the image into four quadrants
-        top_left = self._pic[:h2, :w2]
-        top_right = self._pic[:h2, w2:]
-        bottom_left = self._pic[h2:, :w2]
-        bottom_right = self._pic[h2:, w2:]
+        top_left = pic[:h2, :w2]
+        top_right = pic[:h2, w2:]
+        bottom_left = pic[h2:, :w2]
+        bottom_right = pic[h2:, w2:]
         return [top_left, top_right, bottom_left, bottom_right]
 
     def check(self, mean_threshold, max_threshold, skip, first_layer_list, n):
@@ -65,9 +65,9 @@ class Processing:
         if n >= self._depth:
             return
         # go through each image in the current layer
-        for self._pic in first_layer_list[n]:
+        for tile in first_layer_list[n]:
             # divide
-            segments = self.pic_devider()
+            segments = self.pic_divider(tile)
             # check the density of each segment
             for sec in segments:
                 density = np.sum(sec) / (sec.shape[0] * sec.shape[1])
@@ -163,7 +163,7 @@ def segment(initial_img, depth, skip, size, sigma):
     original_img[mask] = np.nan  # Set NaN values in the original image
 
     processed_img = original_img
-    # processed_img = pic
+    # processed_img = pic # Use if segments are not set to NaN
 
     # Plot the original image
     plot_image(initial_img, title="original image", xlabel="x", ylabel="y")
