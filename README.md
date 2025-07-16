@@ -11,5 +11,4 @@ This project implements a recursive image segmentation algorithm for extracting 
 <img width="6000" height="3375" alt="Untitled design (6)" src="https://github.com/user-attachments/assets/a30ce52a-1299-4dd8-b5bd-2613c63d2a43" />
 <img width="6000" height="3375" alt="Untitled design (7)" src="https://github.com/user-attachments/assets/cd1852fe-fca3-4369-b9dd-9dda933732b4" />
 
-
 `conda env create -f condaenv.yaml`
