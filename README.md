@@ -9,8 +9,8 @@ This project implements a recursive image segmentation algorithm for extracting 
 # How to create the conda environment
 
 <p align="center">
-  <img width="6000" height="3375" alt="Untitled design (6)" src="https://github.com/user-attachments/assets/a30ce52a-1299-4dd8-b5bd-2613c63d2a43" />
-  <img width="6000" height="3375" alt="Untitled design (7)" src="https://github.com/user-attachments/assets/cd1852fe-fca3-4369-b9dd-9dda933732b4" />
+  <img width="45%" height="3375" alt="Untitled design (6)" src="https://github.com/user-attachments/assets/a30ce52a-1299-4dd8-b5bd-2613c63d2a43" />
+  <img width="45%" height="3375" alt="Untitled design (7)" src="https://github.com/user-attachments/assets/cd1852fe-fca3-4369-b9dd-9dda933732b4" />
 </p>
 
 <img width="6000" height="3375" alt="Untitled design (6)" src="https://github.com/user-attachments/assets/a30ce52a-1299-4dd8-b5bd-2613c63d2a43" />
