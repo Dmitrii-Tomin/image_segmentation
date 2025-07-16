@@ -2,8 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 from scipy.ndimage import gaussian_filter
-import time
 import math
+
+# import time
 
 
 class Processing:
@@ -88,7 +89,7 @@ class Processing:
 
 
 class SegmentApp:
-    """A class to encapsulate the segmentation application."""
+    """Encapsulates image segmentation using recursive quadrant-based filtering."""
 
     def __init__(self, initial_img, depth, skip, size, sigma):
         """Initialize the SegmentApp with parameters."""
@@ -105,13 +106,7 @@ class SegmentApp:
 
         # Apply a Gaussian filter to the subtracted image
         blurred_img = gaussian_filter(self._initial_img, self._sigma)
-
-        # Initialize a list to hold the segmented images at each depth
-        # each element of the list corresponds to a depth level
-        first_layer_list = [[] for _ in range(self._depth + 1)]
-
         pic = blurred_img.copy()  # Initial image to be segmented
-        first_layer_list[0].append(pic)  # Add the initial image to the first layer list
 
         """calculate the maximum depth based on the image size"""
         ################################################################################
@@ -128,9 +123,14 @@ class SegmentApp:
             self._depth = max_depth
         ################################################################################
 
+        # Initialize a list to hold the segmented images at each depth
+        # each element of the list corresponds to a depth level
+        first_layer_list = [[] for _ in range(self._depth + 1)]
+        first_layer_list[0].append(pic)  # Add the initial image to the first layer list
+
         processed = Processing(pic, self._depth)  # Initialize the Processing class
 
-        initialization_time = time.time() - start
+        # initialization_time = time.time() - start
 
         """Segment the image"""
         ################################################################################
@@ -139,7 +139,7 @@ class SegmentApp:
         mean_threshold = thresholds[0]  # Get the mean threshold value
         max_threshold = thresholds[1]  # Get the maximum threshold value
 
-        threshold_time = time.time() - start - initialization_time
+        # threshold_time = time.time() - start - initialization_time
 
         # Start the segmentation process
         processed.check(
@@ -147,19 +147,18 @@ class SegmentApp:
         )
         ################################################################################
 
-        segmentation_time = time.time() - start - threshold_time - initialization_time
+        # segmentation_time = time.time() - start - threshold_time - initialization_time
 
-        # duration of the segmentation process
-        print(
-            "initialization time:",
-            initialization_time,
-            "threshold calculation time:",
-            threshold_time,
-            "segmentation time:",
-            segmentation_time,
-            "total time:",
-            time.time() - start,
-        )
+        # print(
+        #     "initialization time:",
+        #     initialization_time,
+        #     "threshold calculation time:",
+        #     threshold_time,
+        #     "segmentation time:",
+        #     segmentation_time,
+        #     "total time:",
+        #     time.time() - start,
+        # )
 
         mask = np.isnan(pic)  # Create a mask for NaN values
         original_img[mask] = np.nan  # Set NaN values in the original image
@@ -167,7 +166,7 @@ class SegmentApp:
         processed_img = original_img
         # processed_img = pic # Use if segments are not set to NaN
 
-        return blurred_img, processed_img
+        return {"blurred": blurred_img, "processed": processed_img}
 
 
 def plot_image(image, title="Image", xlabel="x", ylabel="y"):
@@ -198,17 +197,17 @@ if __name__ == "__main__":
     # and add a constant to avoid negative values
     initial_img = beam.astype(float) - back.astype(float)  # [200:1800, 400:1750]TBD
     initial_img[initial_img < 0] = 0
-
-    # Start the timer
-    start = time.time()
-
     ####################################################################################
 
+    # Start the timer
+    # start = time.time()
+
+    # Create an instance of SegmentApp with the initial image and parameters
     app = SegmentApp(initial_img, depth, skip, size, sigma)
 
     results = app.start_segment_app()
-    blurred_img = results[0]  # Get the blurred image
-    processed_img = results[1]  # Get the processed image
+    blurred_img = results["blurred"]  # Get the blurred image
+    processed_img = results["processed"]  # Get the processed image
 
     # Plotting the images
     plot_image(initial_img, title="Image", xlabel="x", ylabel="y")
