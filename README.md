@@ -9,6 +9,6 @@ This project implements a recursive image segmentation algorithm for extracting 
 # Results
 
 <img width="6000" height="3375" alt="Untitled design (9)" src="https://github.com/user-attachments/assets/4c38b81d-f785-4e46-9dd3-64729727cf59" />
-left: original_images
-middle: segmented image with colors corrwsponding to given depth
-right: segmented image with RONI set to NAN
+left: original_images  
+middle: segmented image with colors corrwsponding to given depth  
+right: segmented image with RONI set to NAN  
