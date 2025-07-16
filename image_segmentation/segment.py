@@ -210,6 +210,6 @@ if __name__ == "__main__":
     processed_img = results["processed"]  # Get the processed image
 
     # Plotting the images
-    plot_image(initial_img, title="Image", xlabel="x", ylabel="y")
-    plot_image(blurred_img, title="Image", xlabel="x", ylabel="y")
-    plot_image(processed_img, title="Image", xlabel="x", ylabel="y")
+    # plot_image(initial_img, title="Image", xlabel="x", ylabel="y")
+    # plot_image(blurred_img, title="Image", xlabel="x", ylabel="y")
+    # plot_image(processed_img, title="Image", xlabel="x", ylabel="y")
