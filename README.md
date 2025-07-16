@@ -8,4 +8,6 @@ This project implements a recursive image segmentation algorithm for extracting 
 
 # How to create the conda environment
 
+<img width="6000" height="3375" alt="Untitled design (4)" src="https://github.com/user-attachments/assets/729b70fd-1cb1-40ac-8c28-c3d48f91ab0c" />
+
 `conda env create -f condaenv.yaml`
