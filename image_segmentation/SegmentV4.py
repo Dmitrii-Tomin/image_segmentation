@@ -87,6 +87,89 @@ class Processing:
         self.check(mean_threshold, max_threshold, skip, first_layer_list, n + 1)
 
 
+class SegmentApp:
+    """A class to encapsulate the segmentation application."""
+
+    def __init__(self, initial_img, depth, skip, size, sigma):
+        """Initialize the SegmentApp with parameters."""
+        self._initial_img = initial_img
+        self._depth = depth
+        self._skip = skip
+        self._size = size
+        self._sigma = sigma
+
+    def start_segment_app(self):
+        """Start the segmentation application."""
+
+        original_img = self._initial_img.copy()
+
+        # Apply a Gaussian filter to the subtracted image
+        blurred_img = gaussian_filter(self._initial_img, self._sigma)
+
+        # Initialize a list to hold the segmented images at each depth
+        # each element of the list corresponds to a depth level
+        first_layer_list = [[] for _ in range(self._depth + 1)]
+
+        pic = blurred_img.copy()  # Initial image to be segmented
+        first_layer_list[0].append(pic)  # Add the initial image to the first layer list
+
+        """calculate the maximum depth based on the image size"""
+        ################################################################################
+        h, w = pic.shape
+        shortest_side = min(h, w)
+        max_depth = math.floor(math.log2(shortest_side / 2)) + 1
+        if self._depth > max_depth:
+            print(
+                f"Warning: The specified depth {self._depth} "
+                f"exceeds the maximum depth {max_depth} "
+                f"for the image size {h}x{w}. "
+                f"Adjusting depth to {max_depth}."
+            )
+            self._depth = max_depth
+        ################################################################################
+
+        processed = Processing(pic, self._depth)  # Initialize the Processing class
+
+        initialization_time = time.time() - start
+
+        """Segment the image"""
+        ################################################################################
+        # Calculate the thresholds based on the border of the image
+        thresholds = processed.calculate_threshold(self._size)
+        mean_threshold = thresholds[0]  # Get the mean threshold value
+        max_threshold = thresholds[1]  # Get the maximum threshold value
+
+        threshold_time = time.time() - start - initialization_time
+
+        # Start the segmentation process
+        processed.check(
+            mean_threshold, max_threshold, self._skip, first_layer_list, n=0
+        )
+        ################################################################################
+
+        segmentation_time = time.time() - start - threshold_time - initialization_time
+
+        # duration of the segmentation process
+        print(
+            "initialization time:",
+            initialization_time,
+            "threshold calculation time:",
+            threshold_time,
+            "segmentation time:",
+            segmentation_time,
+            "total time:",
+            time.time() - start,
+        )
+
+        mask = np.isnan(pic)  # Create a mask for NaN values
+        original_img[mask] = np.nan  # Set NaN values in the original image
+
+        processed_img = original_img
+        # processed_img = pic # Use if segments are not set to NaN
+
+        return blurred_img, processed_img
+
+
 def plot_image(image, title="Image", xlabel="x", ylabel="y"):
     """Plot an image with a colorbar."""
 
@@ -96,81 +179,6 @@ def plot_image(image, title="Image", xlabel="x", ylabel="y"):
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     plt.show()
-
-
-def segment(initial_img, depth, skip, size, sigma):
-    """combine everything in one function."""
-
-    original_img = initial_img.copy()
-
-    # Apply a Gaussian filter to the subtracted image
-    blurred_img = gaussian_filter(initial_img, sigma)
-
-    # Initialize a list to hold the segmented images at each depth
-    # each element of the list corresponds to a depth level
-    first_layer_list = [[] for _ in range(depth + 1)]
-
-    pic = blurred_img.copy()  # Initial image to be segmented
-    first_layer_list[0].append(pic)  # Add the initial image to the first layer list
-
-    """calculate the maximum depth based on the image size"""
-    ####################################################################################
-    h, w = pic.shape
-    shortest_side = min(h, w)
-    max_depth = math.floor(math.log2(shortest_side / 2)) + 1
-    if depth > max_depth:
-        print(
-            f"Warning: The specified depth {depth} "
-            f"exceeds the maximum depth {max_depth} "
-            f"for the image size {h}x{w}. "
-            f"Adjusting depth to {max_depth}."
-        )
-        depth = max_depth
-    ####################################################################################
-
-    processed = Processing(pic, depth)  # Initialize the Processing class
-
-    initialization_time = time.time() - start
-
-    """Segment the image"""
-    ####################################################################################
-    # Calculate the thresholds based on the border of the image
-    thresholds = processed.calculate_threshold(size)
-    mean_threshold = thresholds[0]  # Get the mean threshold value
-    max_threshold = thresholds[1]  # Get the maximum threshold value
-
-    threshold_time = time.time() - start - initialization_time
-
-    # Start the segmentation process
-    processed.check(mean_threshold, max_threshold, skip, first_layer_list, n=0)
-    ####################################################################################
-
-    segmentation_time = time.time() - start - threshold_time - initialization_time
-
-    # duration of the segmentation process
-    print(
-        "initialization time:",
-        initialization_time,
-        "threshold calculation time:",
-        threshold_time,
-        "segmentation time:",
-        segmentation_time,
-        "total time:",
-        time.time() - start,
-    )
-
-    mask = np.isnan(pic)  # Create a mask for NaN values
-    original_img[mask] = np.nan  # Set NaN values in the original image
-
-    processed_img = original_img
-    # processed_img = pic # Use if segments are not set to NaN
-
-    # Plot the original image
-    plot_image(initial_img, title="original image", xlabel="x", ylabel="y")
-    # plot the blurred image
-    plot_image(blurred_img, title="Blurred Image", xlabel="x", ylabel="y")
-
-    return processed_img
 
 
 if __name__ == "__main__":
@@ -186,16 +194,23 @@ if __name__ == "__main__":
     beam = pickle.load(beam_file)
     back = pickle.load(back_file)
 
-    # Start the timer
-    start = time.time()
-
     # subtract the background from the beam
     # and add a constant to avoid negative values
     initial_img = beam.astype(float) - back.astype(float)  # [200:1800, 400:1750]TBD
     initial_img[initial_img < 0] = 0
+
+    # Start the timer
+    start = time.time()
+
     ####################################################################################
 
-    processed_img = segment(initial_img, depth, skip, size, sigma)
+    app = SegmentApp(initial_img, depth, skip, size, sigma)
 
-    # Plotting the final segmented image
-    plot_image(processed_img, title="Processed Image", xlabel="x", ylabel="y")
+    results = app.start_segment_app()
+    blurred_img = results[0]  # Get the blurred image
+    processed_img = results[1]  # Get the processed image
+
+    # Plotting the images
+    plot_image(initial_img, title="Image", xlabel="x", ylabel="y")
+    plot_image(blurred_img, title="Image", xlabel="x", ylabel="y")
+    plot_image(processed_img, title="Image", xlabel="x", ylabel="y")
