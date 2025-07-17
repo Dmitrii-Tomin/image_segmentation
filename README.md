@@ -40,7 +40,7 @@ Multiplier applied to the maximum threshold for sensitivity adjustment.
 
 ### Example
 
-```
+```python
 import numpy as np
 from image_segmentation import Segment
 import matplotlib.pyplot as plt
