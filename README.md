@@ -17,7 +17,7 @@ This project implements a recursive image segmentation algorithm for extracting 
 ## Usage
 
 ```python
-Segment(initial_img, depth, skip, sigma, threshold_calc_size, threshold_multiplier)
+Segment(initial_img, depth, skip, sigma, thresh_win, thresh_mult)
 ```
 
 `initial_img` : ndarray
@@ -32,10 +32,10 @@ Number of depth levels to skip before applying threshold masking.
 `sigma` : float
 Sigma value for Gaussian blur applied before segmentation.
 
-`threshold_calc_size` : int
+`thresh_win` : int
 Size of the box regions used for threshold calculation.
 
-`threshold_multiplier` : float
+`thresh_mult` : float
 Multiplier applied to the maximum threshold for sensitivity adjustment.
 
 
@@ -55,8 +55,8 @@ segmenter = Segment(
     depth=10,
     skip=0,
     sigma=2,
-    threshold_calc_size=100,
-    threshold_multiplier=1.5,
+    thresh_win=100,
+    thresh_mult=1.5,
 )
 
 # Run segmentation
