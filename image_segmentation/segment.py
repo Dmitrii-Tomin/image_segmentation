@@ -16,7 +16,7 @@ class Processing:
         self._pic = pic
         self._depth = depth
 
-    def calculate_threshold(self, size):
+    def calculate_threshold(self, size, thresh_mult):
         """Calculate the threshold based on the border of the image."""
 
         h, w = self._pic.shape
@@ -39,7 +39,7 @@ class Processing:
         average = averages / 4
 
         mean_threshold = average
-        max_threshold = maximum * 1.5
+        max_threshold = maximum * thresh_mult
 
         return mean_threshold, max_threshold
 
@@ -91,13 +91,14 @@ class Processing:
 class SegmentApp:
     """Encapsulates image segmentation using recursive quadrant-based filtering."""
 
-    def __init__(self, initial_img, depth, skip, size, sigma):
+    def __init__(self, initial_img, depth, skip, size, sigma, thresh_mult):
         """Initialize the SegmentApp with parameters."""
         self._initial_img = initial_img
         self._depth = depth
         self._skip = skip
         self._size = size
         self._sigma = sigma
+        self._thresh_mult = thresh_mult
 
     def start_segment_app(self):
         """Start the segmentation application."""
@@ -135,7 +136,7 @@ class SegmentApp:
         """Segment the image"""
         ################################################################################
         # Calculate the thresholds based on the border of the image
-        thresholds = processed.calculate_threshold(self._size)
+        thresholds = processed.calculate_threshold(self._size, self._thresh_mult)
         mean_threshold = thresholds[0]  # Get the mean threshold value
         max_threshold = thresholds[1]  # Get the maximum threshold value
 
@@ -185,6 +186,7 @@ if __name__ == "__main__":
     skip = 0  # Skip depths for segmentation
     size = 100  # Size of the boxes for threshold calculation
     sigma = 2  # Sigma for Gaussian filter
+    threshold_multiplier = 1.5  # Threshold multiplier
 
     """Load the beam and background images and process them"""
     ####################################################################################
@@ -203,7 +205,7 @@ if __name__ == "__main__":
     # start = time.time()
 
     # Create an instance of SegmentApp with the initial image and parameters
-    app = SegmentApp(initial_img, depth, skip, size, sigma)
+    app = SegmentApp(initial_img, depth, skip, size, sigma, threshold_multiplier)
 
     results = app.start_segment_app()
     blurred_img = results["blurred"]  # Get the blurred image
