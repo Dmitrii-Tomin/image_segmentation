@@ -72,6 +72,11 @@ plt.show()
 ```
 
 
+## Create conda evironment
+
+`conda env create -f condaenv.yaml`
+
+
 ## Installation
 
 Install using:
