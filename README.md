@@ -12,7 +12,7 @@ This project implements a recursive image segmentation algorithm for extracting 
 - **Gaussian Blur Preprocessing**
 - **Adaptive Local Thresholding** (Mean and Max)
 - **Automatically masks segments with low average intensity or low maximum values**
-- **Warns and adjusts if depth is too large for image size**
+- **Adjusts if depth is too large for image size**
 
 
 ## Usage
@@ -72,18 +72,17 @@ plt.show()
 ```
 
 
-## Create conda evironment
+## Installation
+
+### Create conda evironment
 
 `conda env create -f condaenv.yaml`
 
-
-## Installation
-
-Install using:
+**Install using:**
 ```
 pip install git+https://github.com/Dmitrii-Tomin/image_segmentation.git
 ```
-or clone repository and install:
+**or clone repository and install:**
 ```
 git clone https://github.com/Dmitrii-Tomin/image_segmentation.git
 cd image_segmentation
