@@ -6,13 +6,13 @@ This project implements a recursive image segmentation algorithm for extracting 
 
 <img width="1177" height="839" alt="Figure_5" src="https://github.com/user-attachments/assets/3a25f5cb-4143-4b45-8938-cba248bf774b" />
 
-##Features
+## Features
 
--Recursive Quad-Tree Segmentation
--Gaussian Blur Preprocessing
--Adaptive Local Thresholding (Mean and Max)
--Automatically masks segments with low average intensity or low maximum values
--Warns and adjusts if depth is too large for image size
+- Recursive Quad-Tree Segmentation
+- Gaussian Blur Preprocessing
+- Adaptive Local Thresholding (Mean and Max)
+- Automatically masks segments with low average intensity or low maximum values
+- Warns and adjusts if depth is too large for image size
 
 # Results
 
