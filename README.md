@@ -74,10 +74,6 @@ plt.show()
 
 ## Installation
 
-### Create conda evironment
-
-`conda env create -f condaenv.yaml`
-
 **Install using:**
 ```
 pip install git+https://github.com/Dmitrii-Tomin/image_segmentation.git
@@ -88,6 +84,10 @@ git clone https://github.com/Dmitrii-Tomin/image_segmentation.git
 cd image_segmentation
 pip install .
 ```
+
+### Create conda evironment
+
+`conda env create -f condaenv.yaml`
 
 
 # Results
