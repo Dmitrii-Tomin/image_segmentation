@@ -72,7 +72,7 @@ plt.show()
 ```
 
 
-## Instalation
+## Installation
 
 Install using:
 ```
