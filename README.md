@@ -38,6 +38,37 @@ Sigma value for Gaussian blur applied before segmentation.
 `threshold_multiplier` : float
 Multiplier applied to the maximum threshold for sensitivity adjustment.
 
+### Example
+
+```
+import numpy as np
+from image_segmentation import Segment
+import matplotlib.pyplot as plt
+
+# Load or prepare your initial image as a 2D NumPy array
+initial_img = np.load('your_image.npy')  # example
+
+# Create a Segment instance
+segmenter = Segment(
+    initial_img=initial_img,
+    depth=10,
+    skip=0,
+    size=100,
+    sigma=2,
+    threshold_multiplier=1.5,
+)
+
+# Run segmentation
+processed_img = segmenter.start_segment()
+
+# Use matplotlib to visualize the result
+plt.imshow(processed_img, origin='lower')
+plt.colorbar()
+plt.title("Segmented Image")
+plt.show()
+
+```
+
 # Results
 
    | Original Image                   | Segmented (Colored by Depth)                   | Segmented (RONI = NaN)                     |
