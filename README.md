@@ -14,6 +14,7 @@ This project implements a recursive image segmentation algorithm for extracting 
 - **Automatically masks segments with low average intensity or low maximum values**
 - **Warns and adjusts if depth is too large for image size**
 
+
 ## Usage
 
 ```python
@@ -68,6 +69,20 @@ plt.colorbar()
 plt.title("Segmented Image")
 plt.show()
 
+```
+
+
+## Instalation
+
+Install using:
+```
+pip install git+https://github.com/Dmitrii-Tomin/image_segmentation.git
+```
+or clone repository and install:
+```
+git clone https://github.com/Dmitrii-Tomin/image_segmentation.git
+cd image_segmentation
+pip install .
 ```
 
 
