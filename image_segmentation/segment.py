@@ -4,8 +4,6 @@ import pickle
 from scipy.ndimage import gaussian_filter
 import math
 
-# import time
-
 
 class Processing:
     """Class for processing images."""
@@ -132,8 +130,6 @@ class Segment:
 
         processed = Processing(pic, self._depth)
 
-        # initialization_time = time.time() - start
-
         """Segment the image"""
         ################################################################################
         # Calculate the thresholds based on the border of the image
@@ -141,24 +137,9 @@ class Segment:
         mean_threshold = thresholds[0]
         max_threshold = thresholds[1]
 
-        # threshold_time = time.time() - start - initialization_time
-
         # Start the segmentation process
         processed.check(mean_threshold, max_threshold, self._skip, layers_list, n=0)
         ################################################################################
-
-        # segmentation_time = time.time() - start - threshold_time - initialization_time
-
-        # print(
-        #     "initialization time:",
-        #     initialization_time,
-        #     "threshold calculation time:",
-        #     threshold_time,
-        #     "segmentation time:",
-        #     segmentation_time,
-        #     "total time:",
-        #     time.time() - start,
-        # )
 
         mask = np.isnan(pic)  # Create a mask for NaN values
         original_img[mask] = np.nan  # Set NaN values in the original image
@@ -199,9 +180,6 @@ if __name__ == "__main__":
     initial_img = beam.astype(float) - back.astype(float)
     initial_img[initial_img < 0] = 0
     ####################################################################################
-
-    # Start the timer
-    # start = time.time()
 
     # Create an instance of SegmentApp with the initial image and parameters
     app = Segment(initial_img, depth, skip, sigma, thresh_win, thresh_mult)
