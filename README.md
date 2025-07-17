@@ -20,6 +20,24 @@ This project implements a recursive image segmentation algorithm for extracting 
 Segment(initial_img, depth, skip, size, sigma, threshold_multiplier)
 ```
 
+`initial_img` : ndarray
+The input 2D image array to be segmented.
+
+`depth` : int
+Maximum recursion depth for segmentation.
+
+`skip` : int
+Number of depth levels to skip before applying threshold masking.
+
+`size` : int
+Size of the border regions used for threshold calculation.
+
+`sigma` : float
+Sigma value for Gaussian blur applied before segmentation.
+
+`threshold_multiplier` : float
+Multiplier applied to the maximum threshold for sensitivity adjustment.
+
 # Results
 
    | Original Image                   | Segmented (Colored by Depth)                   | Segmented (RONI = NaN)                     |
