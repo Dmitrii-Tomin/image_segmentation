@@ -58,7 +58,7 @@ class Processing:
         bottom_right = pic[h2:, w2:]
         return [top_left, top_right, bottom_left, bottom_right]
 
-    def check(self, mean_threshold, max_threshold, skip, layers_list, n):
+    def check(self, mean_threshold, max_threshold, skip, layers_list, mval, n):
         """Recursively segment the image based on the threshold."""
 
         # if the current depth exceeds the maximum depth, return
@@ -74,7 +74,7 @@ class Processing:
                 if n >= skip and (
                     density <= mean_threshold or sec.max() <= max_threshold
                 ):
-                    sec.fill(np.nan)  # set to NaN if below threshold
+                    sec.fill(mval)  # set to NaN if below threshold
 
                     # or for colored visualization:
                     # sec *= 0  # set to zero if below threshold
@@ -84,13 +84,13 @@ class Processing:
                     layers_list[n + 1].append(sec)
 
         # Recursively check the next depth level
-        self.check(mean_threshold, max_threshold, skip, layers_list, n + 1)
+        self.check(mean_threshold, max_threshold, skip, layers_list, mval, n + 1)
 
 
 class Segment:
     """Encapsulates image segmentation using recursive quadrant-based filtering."""
 
-    def __init__(self, initial_img, depth, skip, sigma, thresh_win, thresh_mult):
+    def __init__(self, initial_img, depth, skip, sigma, thresh_win, thresh_mult, mval):
         """Initialize the SegmentApp with parameters."""
         self._initial_img = initial_img
         self._depth = depth
@@ -98,6 +98,7 @@ class Segment:
         self._thresh_win = thresh_win
         self._sigma = sigma
         self._thresh_mult = thresh_mult
+        self._mval = mval
 
     def start_segment(self):
         """Start the segmentation application."""
@@ -138,11 +139,17 @@ class Segment:
         max_threshold = thresholds[1]
 
         # Start the segmentation process
-        processed.check(mean_threshold, max_threshold, self._skip, layers_list, n=0)
+        processed.check(
+            mean_threshold, max_threshold, self._skip, layers_list, self._mval, n=0
+        )
         ################################################################################
 
-        mask = np.isnan(pic)  # Create a mask for NaN values
-        original_img[mask] = np.nan  # Set NaN values in the original image
+        if np.isnan(self._mval):
+            mask = np.isnan(pic)  # Create a mask for NaN values
+        else:
+            mask = pic == mval
+
+        original_img[mask] = mval  # Set NaN values in the original image
 
         processed_img = original_img
         # processed_img = pic # Use for colored output
@@ -167,6 +174,7 @@ if __name__ == "__main__":
     sigma = 2  # Sigma for Gaussian filter
     thresh_win = 100  # Size of the boxes for threshold calculation
     thresh_mult = 1.5  # Threshold multiplier
+    mval = np.nan
 
     """Load the beam and background images and process them"""
     ####################################################################################
@@ -182,7 +190,7 @@ if __name__ == "__main__":
     ####################################################################################
 
     # Create an instance of SegmentApp with the initial image and parameters
-    app = Segment(initial_img, depth, skip, sigma, thresh_win, thresh_mult)
+    app = Segment(initial_img, depth, skip, sigma, thresh_win, thresh_mult, mval)
 
     processed_img, blurred_img = app.start_segment()
 
