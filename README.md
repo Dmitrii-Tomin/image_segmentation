@@ -22,7 +22,7 @@ Segment(initial_img, depth, skip, sigma, thresh_win, thresh_mult, mval)
 ```
 
 `initial_img` : ndarray
- The input 2D image array to be segmented.
+The input 2D image array to be segmented.
 
 `depth` : int
  Maximum recursion depth for segmentation.
@@ -91,7 +91,7 @@ pip install .
 
 ### Create conda evironment
 
-`conda env create -f condaenv.yaml`
+```conda env create -f condaenv.yaml```
 
 
 # Results
