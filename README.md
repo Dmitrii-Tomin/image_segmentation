@@ -65,7 +65,7 @@ segmenter = Segment(
 )
 
 # Run segmentation
-processed_img = segmenter.start_segment()
+processed_img, blurred_img = segmenter.start_segment()
 
 # Use matplotlib to visualize the result
 plt.imshow(processed_img, origin='lower')
