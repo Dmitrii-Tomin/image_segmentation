@@ -90,9 +90,9 @@ pip install .
 ```
 
 ### Create conda evironment
-
-```conda env create -f condaenv.yaml```
-
+```
+conda env create -f condaenv.yaml
+```
 
 # Results
 
