@@ -21,25 +21,25 @@ This project implements a recursive image segmentation algorithm for extracting 
 Segment(initial_img, depth, skip, sigma, thresh_win, thresh_mult, mval)
 ```
 
-`initial_img` : ndarray
-The input 2D image array to be segmented.
+`initial_img` : ndarray <br>
+ The input 2D image array to be segmented.
 
-`depth` : int
- Maximum recursion depth for segmentation.
+`depth` : int <br>
+  Maximum recursion depth for segmentation.
 
-`skip` : int
+`skip` : int <br>
  Number of depth levels to skip before applying threshold masking.
 
-`sigma` : float
+`sigma` : float <br>
  Sigma value for Gaussian blur applied before segmentation.
 
-`thresh_win` : int
+`thresh_win` : int <br>
  Size of the box regions used for threshold calculation.
 
-`thresh_mult` : float
+`thresh_mult` : float <br>
  Multiplier applied to the maximum threshold for sensitivity adjustment.
 
-`mval` : float or np.nan
+`mval` : float or np.nan <br>
  The value used to mask out low-intensity segments (e.g., np.nan or 0).
 
 
