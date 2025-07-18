@@ -22,25 +22,25 @@ Segment(initial_img, depth, skip, sigma, thresh_win, thresh_mult, mval)
 ```
 
 `initial_img` : ndarray
-The input 2D image array to be segmented.
+ The input 2D image array to be segmented.
 
 `depth` : int
-Maximum recursion depth for segmentation.
+ Maximum recursion depth for segmentation.
 
 `skip` : int
-Number of depth levels to skip before applying threshold masking.
+ Number of depth levels to skip before applying threshold masking.
 
 `sigma` : float
-Sigma value for Gaussian blur applied before segmentation.
+ Sigma value for Gaussian blur applied before segmentation.
 
 `thresh_win` : int
-Size of the box regions used for threshold calculation.
+ Size of the box regions used for threshold calculation.
 
 `thresh_mult` : float
-Multiplier applied to the maximum threshold for sensitivity adjustment.
+ Multiplier applied to the maximum threshold for sensitivity adjustment.
 
 `mval` : float or np.nan
-The value used to mask out low-intensity segments (e.g., np.nan or 0).
+ The value used to mask out low-intensity segments (e.g., np.nan or 0).
 
 
 ### Example
