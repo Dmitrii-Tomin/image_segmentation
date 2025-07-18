@@ -18,7 +18,7 @@ This project implements a recursive image segmentation algorithm for extracting 
 ## Usage
 
 ```python
-Segment(initial_img, depth, skip, sigma, thresh_win, thresh_mult)
+Segment(initial_img, depth, skip, sigma, thresh_win, thresh_mult, mval)
 ```
 
 `initial_img` : ndarray
@@ -39,6 +39,9 @@ Size of the box regions used for threshold calculation.
 `thresh_mult` : float
 Multiplier applied to the maximum threshold for sensitivity adjustment.
 
+`mval` : float or np.nan
+The value used to mask out low-intensity segments (e.g., np.nan or 0).
+
 
 ### Example
 
@@ -58,6 +61,7 @@ segmenter = Segment(
     sigma=2,
     thresh_win=100,
     thresh_mult=1.5,
+    mval=np.nan
 )
 
 # Run segmentation
