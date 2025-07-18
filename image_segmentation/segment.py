@@ -29,8 +29,10 @@ class Processing:
 
         corners = [tl, tr, bl, br]
 
+        # Calculate the average of each corner
         for corner in corners:
             averages += np.mean(corner)
+            # Get the highest number of all the corners
             if np.max(corner) > prev_max:
                 maximum = corner.max()
                 prev_max = maximum
@@ -100,13 +102,19 @@ class Segment:
         self._thresh_mult = thresh_mult
         self._mval = mval
 
+    @property
+    def blurred_image(self) -> np.ndarray:
+        """Returns a Gaussian-blurred version of the initial image."""
+        blurred = gaussian_filter(self._initial_img, self._sigma)
+        return blurred
+
     def start_segment(self):
         """Start the segmentation application."""
 
         original_img = self._initial_img.copy()
 
         # Apply a Gaussian filter to the subtracted image
-        blurred_img = gaussian_filter(self._initial_img, self._sigma)
+        blurred_img = self.blurred_image
         pic = blurred_img.copy()  # Initial image to be segmented
 
         """calculate the maximum depth based on the image size"""
@@ -154,7 +162,7 @@ class Segment:
         processed_img = original_img
         # processed_img = pic # Use for colored output
 
-        return processed_img, blurred_img
+        return processed_img
 
 
 def plot_image(image, title="Image", xlabel="x", ylabel="y"):
@@ -174,7 +182,7 @@ if __name__ == "__main__":
     sigma = 2  # Sigma for Gaussian filter
     thresh_win = 100  # Size of the boxes for threshold calculation
     thresh_mult = 1.5  # Threshold multiplier
-    mval = np.nan
+    mval = np.nan  # value used to mask out RONI
 
     """Load the beam and background images and process them"""
     ####################################################################################
@@ -192,7 +200,8 @@ if __name__ == "__main__":
     # Create an instance of SegmentApp with the initial image and parameters
     app = Segment(initial_img, depth, skip, sigma, thresh_win, thresh_mult, mval)
 
-    processed_img, blurred_img = app.start_segment()
+    blurred_img = app.blurred_image
+    processed_img = app.start_segment()
 
     # Plotting the images
     plot_image(initial_img, title="Image", xlabel="x", ylabel="y")
